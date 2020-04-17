@@ -14,7 +14,11 @@ module.exports = (app) => {
     app.put("/api/workouts/:id", (req, res) => {
         if (req.params.id != undefined) {
             db.Exercise.create(req.body)
-            .then(({_id}) => db.Workout.findOneAndUpdate({"_id": mongo.ObjectId(req.params.id)}, {$push: {exercises: _id}, $inc:{"totalTime": req.body.duration}}))
+            .then(({_id}) => db.Workout.findOneAndUpdate({"_id": mongo.ObjectId(req.params.id)}, {$push: {exercises: _id}, $inc:{"totalDuration": req.body.duration}}))
+            .aggregate([
+                {$group: {_v, total: {$sum: "$duration"}}},
+                
+            ])
             .then(dbWorkout => {
                 res.json(dbWorkout)
             })
