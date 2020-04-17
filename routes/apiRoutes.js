@@ -6,7 +6,7 @@ module.exports = (app) => {
         .sort({"day":-1})
         .limit(1)
         .then(dbWorkout => {
-            res.send(dbWorkout);
+            res.json(dbWorkout);
         })
         });
     
@@ -15,10 +15,6 @@ module.exports = (app) => {
         if (req.params.id != undefined) {
             db.Exercise.create(req.body)
             .then(({_id}) => db.Workout.findOneAndUpdate({"_id": mongo.ObjectId(req.params.id)}, {$push: {exercises: _id}, $inc:{"totalDuration": req.body.duration}}))
-            .aggregate([
-                {$group: {_v, total: {$sum: "$duration"}}},
-                
-            ])
             .then(dbWorkout => {
                 res.json(dbWorkout)
             })
