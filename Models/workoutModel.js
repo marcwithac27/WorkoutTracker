@@ -6,9 +6,11 @@ const workoutSchema = new Schema({
     day: {
         type: Date,
         default:Date.now
-    }
+    },
+    exercise: Schema.Types.ObjectId,
+    ref: "Exercise",
 })
 
 const Workout =mongoose.model("Workout", workoutSchema);
 
-module.exports = workout
+module.exports = Workout

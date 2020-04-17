@@ -19,4 +19,7 @@ const exerciseSchema = new Schema({
     weight: Number,
     reps: Number,
     sets: Number,
-})
+});
+
+const Exercise =mongoose.model("Exercise", exerciseSchema);
+module.exports = Exercise;
