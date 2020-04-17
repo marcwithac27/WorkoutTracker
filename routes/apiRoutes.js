@@ -1,8 +1,10 @@
 const db = require("../Models");
-
+const mongo = require("mongojs")
 module.exports = (app) => {
     app.get("/api/workouts", (req ,res) => {
         db.Workout.find({})
+        .sort({"day":-1})
+        .limit(1)
         .then(dbWorkout => {
             res.send(dbWorkout);
         })
@@ -10,21 +12,17 @@ module.exports = (app) => {
     
 
     app.put("/api/workouts/:id", (req, res) => {
-        db.Workout.findByIdAndUpdate(
-            req.params.id,
-            {
-                $push: {
-                    exercises: req.body
-                }
-            }
-        )
-        .then(dbWorkout => {
-            res.json(dbWorkout);
-        })
-        .catch(err => {
-            res.json(err);
+        if (req.params.id != undefined) {
+            db.Exercise.create(req.body)
+            .then(({_id}) => db.Workout.findOneAndUpdate({"_id": mongo.ObjectId(req.params.id)}, {$push: {exercises: _id}, $inc:{"totalTime": req.body.duration}}))
+            .then(dbWorkout => {
+                res.json(dbWorkout)
+            })
+        }
+        
+        
         });
-    });
+   
     
     app.post("/api/workouts", ({ body }, res) => {
         db.Workout.create(body)
@@ -41,6 +39,7 @@ module.exports = (app) => {
     
     app.get("/api/workouts/range", (req, res) => {
         db.Workout.find({})
+        .populate("exercises")
         .then(dbUser => {
             res.json(dbUser);
         })
