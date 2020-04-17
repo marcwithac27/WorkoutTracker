@@ -1,7 +1,7 @@
-const db = require("../models");
+const db = require("../Models");
 
 module.exports = (app) => {
-    app.get("/api/workouts", (req, res) => {
+    app.get("/api/workouts", (res) => {
         db.Workout.find({})
         .then(dbWorkout => {
             res.json(dbWorkout);
@@ -41,7 +41,7 @@ module.exports = (app) => {
         });
     });
     
-    app.get("/api/workouts/range", (req, res) => {
+    app.get("/api/workouts/range", (res) => {
         db.Workout.find({})
         .then(dbUser => {
             res.json(dbUser);
