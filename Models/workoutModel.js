@@ -13,7 +13,7 @@ const workoutSchema = new Schema({
         ref: "Exercise"    
     }
 ]
-})
+});
 
 const Workout =mongoose.model("Workout", workoutSchema);
 
