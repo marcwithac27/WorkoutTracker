@@ -21,5 +21,5 @@ const exerciseSchema = new Schema({
     sets: Number,
 });
 
-const Exercise =mongoose.model("Exercise", exerciseSchema);
+const Exercise = mongoose.model("Exercise", exerciseSchema);
 module.exports = Exercise;
